@@ -24,6 +24,8 @@ import androidx.room.Update
 
 @Dao
 interface SleepDatabaseDao{
+
+    //If use LiveData, don't put suspend
     @Insert
     suspend fun insert(night: SleepNight)
 
@@ -33,7 +35,7 @@ interface SleepDatabaseDao{
 
     //3. Get a specific night based on key, key is nullable
     @Query("SELECT * from daily_sleep_quality_table WHERE nightID=:key")
-    fun get(key:Long):SleepNight?
+    suspend fun get(key:Long):SleepNight?
 
     //4. Get all nights to display
     @Query("SELECT * from daily_sleep_quality_table ORDER BY nightID DESC")
@@ -41,10 +43,10 @@ interface SleepDatabaseDao{
 
     //5. Get the most recent night
     @Query("SELECT * from daily_sleep_quality_table ORDER BY nightID DESC LIMIT 1")
-    fun getTonight():SleepNight?
+    suspend fun getTonight():SleepNight?
 
     @Query("DELETE FROM daily_sleep_quality_table")
-    fun clear()
+    suspend fun clear()
 }
 
 
